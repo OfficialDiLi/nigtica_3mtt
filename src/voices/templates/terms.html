@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Terms of Use - Nigtica</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/plus-jakarta-sans@5.0.3/index.min.css">
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+<div class="container auth-page">
+  <div class="card auth-card" style="max-width: 640px;">
+    <h1 class="card-title">Terms of Use</h1>
+    <p class="card-subtitle">Last updated September 2026 — written plainly, on purpose.</p>
+    <div class="terms-body">
+      <h2>1. What you're getting</h2>
+      <p>Nigtica reads text out loud and turns your voice into text, in
+      Yoruba, Igbo, Hausa, Pidgin, and English. The actual speaking and
+      listening is done by our providers, YarnGPT and Groq — we're the
+      friendly front door, they're the engine room.</p>
+      <h2>2. The AI will get things wrong</h2>
+      <p>Sometimes it mishears a name, mangles a number, or drops a Yoruba
+      tone. Translations can lose the gist. If it matters — health, money,
+      legal stuff, anything serious — check it with a human before acting
+      on it.</p>
+      <h2>3. Don't be a menace</h2>
+      <p>Don't use Nigtica to harass, insult, or impersonate anyone. Don't
+      make voices say things real people never said and pretend they did.
+      And nothing illegal, obviously. Break these and your account goes away.</p>
+      <h2>4. Your data</h2>
+      <p>We keep your email, a scrambled password, and simple tallies (what
+      you ran, when, how much). Your actual words and recordings? Never
+      stored by us — though YarnGPT and Groq process them under their own
+      rules. Want out? Hit Delete in the header and your account is gone;
+      your history becomes anonymous numbers.</p>
+      <h2>5. Play fair</h2>
+      <p>There's an hourly limit so one person can't hog the service or burn
+      through our API credits. Try to dodge it and we'll notice — the tallies
+      in section 4 are how.</p>
+      <h2>6. It's a demo</h2>
+      <p>This is a challenge project, offered as-is. It might sleep, restart,
+      or forget your account on the free hosting. No warranties, no promises
+      — just our best effort.</p>
+    </div>
+    <p class="auth-switch"><a href="{{ url_for('landing') }}">Back to home</a></p>
+  </div>
+</div>
+</body>
+</html>

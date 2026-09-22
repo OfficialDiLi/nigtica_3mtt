@@ -219,6 +219,10 @@
   .auth-card .error-box { margin-top: 0; margin-bottom: 18px; }
   .auth-switch { text-align: center; font-size: 14px; color: var(--text-muted); margin-top: 18px; }
   .auth-switch a { color: var(--lime-700); font-weight: 700; }
+  .terms-body h2 { font-size: 15px; margin: 18px 0 6px; color: var(--text-dark); }
+  .terms-body p { font-size: 14px; line-height: 1.65; color: var(--text-dark); margin: 0 0 8px; }
+  .terms-check { display: flex; gap: 10px; align-items: flex-start; font-size: 14px; color: var(--text-dark); }
+  .terms-check input { margin-top: 3px; accent-color: var(--lime-600); }
   .account { display: flex; align-items: center; gap: 12px; font-size: 14px; color: var(--text-muted); }
   .account a { color: var(--lime-700); font-weight: 700; text-decoration: none; }
   .account a:hover { text-decoration: underline; }

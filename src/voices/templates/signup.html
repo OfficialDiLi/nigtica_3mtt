@@ -28,6 +28,12 @@
         <label class="form-label" for="confirm">Confirm password</label>
         <input type="password" id="confirm" name="confirm" autocomplete="new-password" required minlength="8">
       </div>
+      <div class="form-group">
+        <label class="terms-check">
+          <input type="checkbox" name="terms" value="yes" required>
+          <span>I agree to the <a href="{{ url_for('terms') }}" target="_blank" rel="noopener">Terms of Use</a>, including responsible use of AI voices.</span>
+        </label>
+      </div>
       <button class="btn btn-primary" type="submit" style="width:100%;">Sign up</button>
     </form>
     <p class="auth-switch">Already have an account? <a href="{{ url_for('login') }}">Log in</a></p>

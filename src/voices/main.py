@@ -87,6 +87,7 @@ PUBLIC_ENDPOINTS = {
     "health",
     "static",
     "landing",
+    "terms",
 }
 
 
@@ -170,6 +171,11 @@ def _err(err: YarnGPTError) -> dict:
         "details": err.details,
         "trace_id": err.trace_id or "",
     }
+
+
+@app.get("/terms")
+def terms():
+    return render_template("terms.html")
 
 
 @app.get("/")
@@ -729,6 +735,11 @@ def signup_submit():
     if not auth.csrf_valid(request.form.get("csrf_token")):
         return render_template(
             "signup.html", error="Session expired — reload and try again.",
+            csrf_token=auth.csrf_token(),
+        ), 400
+    if request.form.get("terms") != "yes":
+        return render_template(
+            "signup.html", error="You must accept the Terms of Use to sign up.",
             csrf_token=auth.csrf_token(),
         ), 400
     if (request.form.get("password") or "") != (request.form.get("confirm") or ""):

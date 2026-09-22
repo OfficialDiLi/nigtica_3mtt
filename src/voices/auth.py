@@ -54,6 +54,9 @@ def get_db(path: str) -> sqlite3.Connection:
     db = sqlite3.connect(path)
     db.row_factory = sqlite3.Row
     db.executescript(SCHEMA)
+    cols = [r["name"] for r in db.execute("PRAGMA table_info(users)")]
+    if "terms_accepted_at" not in cols:
+        db.execute("ALTER TABLE users ADD COLUMN terms_accepted_at TEXT")
     db.commit()
     return db
 
@@ -70,7 +73,8 @@ def create_user(db: sqlite3.Connection, email: str | None, password: str | None)
         raise AuthError("Password must be at least 8 characters.")
     try:
         cur = db.execute(
-            "INSERT INTO users (email, password_hash) VALUES (?, ?)",
+            "INSERT INTO users (email, password_hash, terms_accepted_at)"
+            " VALUES (?, ?, datetime('now'))",
             (email, generate_password_hash(password or "")),
         )
         db.commit()

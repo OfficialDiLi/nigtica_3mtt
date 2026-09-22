@@ -135,6 +135,8 @@ Legacy HTML-fragment routes (`POST /tts`, `/tts-status/…`, `/stt`,
 - **Safety** — login-gated synthesis, per-user hourly caps
   (`RATE_LIMIT_PER_HOUR`, default 20, `429 RATE_LIMITED`), input and upload
   size limits, idempotency keys against double billing.
+- **Ethical use** — public `/terms` (acceptable use, AI limitations, data,
+  enforcement); signup requires explicit acceptance, timestamped per user.
 
 ## Deploy (Render)
 
