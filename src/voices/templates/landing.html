@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Nigtica — Hear your language. Speak your mind.</title>
+<meta name="description" content="Nigtica reads aloud and listens in Yoruba, Igbo, Hausa, Nigerian Pidgin, and English. Built for blind users, students, and anyone whose language voice tech forgot.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{{ url_for('static', filename='landing.css') }}">
+</head>
+<body>
+
+<a class="skip" href="#voices">Skip to voices</a>
+
+<nav class="rail" aria-label="Chapters">
+  <a href="#top" data-chapter="0" aria-label="Go to intro"><i></i></a>
+  <a href="#voices" data-chapter="1" aria-label="Go to voices"><i></i></a>
+  <a href="#how" data-chapter="2" aria-label="Go to how it works"><i></i></a>
+  <a href="#access" data-chapter="3" aria-label="Go to access"><i></i></a>
+  <span class="rail-label" id="rail-label">01 / 04</span>
+</nav>
+
+<header class="nav">
+  <div class="wrap nav-in">
+    <a class="brand" href="#top">
+      <span class="mark">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/>
+          <path d="M19 10v2a7 7 0 0 1-14 0v-2"/>
+          <line x1="12" y1="19" x2="12" y2="23"/>
+        </svg>
+      </span>
+      Nigtica
+    </a>
+
+    <nav class="nav-links" aria-label="Primary">
+      <a href="#voices">Voices</a>
+      <a href="#how">How it works</a>
+      <a href="#access">Access</a>
+    </nav>
+
+    <a class="btn btn--primary btn--sm" href="{{ url_for('signup') }}">Try Nigtica</a>
+  </div>
+</header>
+
+<main id="top">
+
+  <section class="hero" id="intro" aria-label="Introduction">
+    <div class="hero-inner">
+      <span class="eyebrow" data-rv><span class="dot"></span> Voice AI for Nigerian languages</span>
+
+      <h1 data-words aria-label="Hear your language. Speak your mind.">Hear your language.<br>Speak your mind.</h1>
+
+      <p class="lead" data-rv>
+        Nigtica reads aloud and listens in Yoruba, Igbo, Hausa, Nigerian Pidgin,
+        and English — in a voice that sounds like home, not like a stranger
+        reading your mother's tongue.
+      </p>
+
+      <div class="hero-cta" data-rv>
+        <a class="btn btn--primary" href="{{ url_for('signup') }}">Start speaking</a>
+        <a class="btn btn--ghost" href="#voices">Meet the voices</a>
+      </div>
+
+      <div class="hero-meta" data-rv>
+        <span><i class="tick">✓</i> 5 languages, one app</span>
+        <span><i class="tick">✓</i> Built for blind users &amp; students</span>
+        <span><i class="tick">✓</i> Free demo account</span>
+      </div>
+    </div>
+
+    <div class="scroll-cue" aria-hidden="true">
+      <span>Scroll</span>
+      <svg width="10" height="14" viewBox="0 0 10 14" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M5 1v12M1 9l4 4 4-4"/>
+      </svg>
+    </div>
+  </section>
+
+  <section class="section" id="voices" aria-label="The voices">
+    <div class="wrap">
+      <div class="sec-head">
+        <div class="sec-tag" data-rv>Chapter 01 — The Voices</div>
+        <h2 data-words aria-label="Five tongues. Zero strangers.">Five tongues. Zero strangers.</h2>
+        <p data-rv>Ask a popular voice assistant to read Yoruba and you'll hear the problem: wrong accent, missing tones, words your mother wouldn't recognise. These voices were built for how Nigerians actually speak. Pick one to try it.</p>
+      </div>
+
+      <div class="grid">
+        <a class="card" href="{{ url_for('signup') }}" data-rv>
+          <div class="card-top">
+            <div class="disc"><span>01</span></div>
+            <div class="tile">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/>
+              </svg>
+            </div>
+          </div>
+          <h3>Yoruba — Èdè Yorùbá</h3>
+          <p class="sample">“Ẹ kú àárọ̀. Káàárọ̀ sí Nigtica.”</p>
+          <p>Tones intact, proverbs safe. Read, write and listen the way Lagos speaks it.</p>
+          <span class="card-cta">Try this voice →</span>
+        </a>
+
+        <a class="card" href="{{ url_for('signup') }}" data-rv>
+          <div class="card-top">
+            <div class="disc"><span>02</span></div>
+            <div class="tile">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/>
+              </svg>
+            </div>
+          </div>
+          <h3>Igbo — Asụsụ Igbo</h3>
+          <p class="sample">“Nnọọ. Daalụ maka iji Nigtica.”</p>
+          <p>From Onitsha market banter to lecture notes — spoken the way the East hears it.</p>
+          <span class="card-cta">Try this voice →</span>
+        </a>
+
+        <a class="card" href="{{ url_for('signup') }}" data-rv>
+          <div class="card-top">
+            <div class="disc"><span>03</span></div>
+            <div class="tile">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/>
+              </svg>
+            </div>
+          </div>
+          <h3>Hausa — Harshen Hausa</h3>
+          <p class="sample">“Sannu. Barka da zuwa Nigtica.”</p>
+          <p>Kano clarity, northern warmth. News, lessons and greetings that land right.</p>
+          <span class="card-cta">Try this voice →</span>
+        </a>
+
+        <a class="card" href="{{ url_for('signup') }}" data-rv>
+          <div class="card-top">
+            <div class="disc"><span>04</span></div>
+            <div class="tile">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21 11.5a8.4 8.4 0 0 1-8.5 8.5 8.9 8.9 0 0 1-3.8-.9L3 21l1.9-5.6A8.5 8.5 0 1 1 21 11.5Z"/>
+              </svg>
+            </div>
+          </div>
+          <h3>Pidgin — Naija no dey carry last</h3>
+          <p class="sample">“How far? Welcome to Nigtica.”</p>
+          <p>The lingua franca most voice tech pretends doesn't exist. We built for it first-class.</p>
+          <span class="card-cta">Try this voice →</span>
+        </a>
+
+        <a class="card" href="{{ url_for('signup') }}" data-rv>
+          <div class="card-top">
+            <div class="disc"><span>05</span></div>
+            <div class="tile">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/>
+              </svg>
+            </div>
+          </div>
+          <h3>English — plus French, Arabic &amp; more</h3>
+          <p class="sample">“Hello. Welcome to Nigtica.”</p>
+          <p>Groq Whisper answers in milliseconds for English and foreign languages.</p>
+          <span class="card-cta">Try this voice →</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="how" aria-label="How it works">
+    <div class="wrap">
+      <div class="federation">
+        <div class="sec-tag" data-rv>Chapter 02 — How it works</div>
+        <h2 data-words aria-label="The right engine for every tongue.">The right engine for every tongue.</h2>
+        <p class="intro" data-rv>No single model speaks everything well. So Nigtica doesn't ask one to — it routes your words to the engine that speaks them best.</p>
+
+        <div class="steps">
+          <div class="step" data-rv>
+            <div class="step-num">01</div>
+            <h3>Speak or type</h3>
+            <p>Talk into your mic or tap a sample chip. No installs, no setup — it runs in the browser.</p>
+          </div>
+          <div class="step" data-rv>
+            <div class="step-num">02</div>
+            <h3>We route it right</h3>
+            <p>Yoruba, Igbo, Hausa and Pidgin go to YarnGPT; English and foreign tongues go to Groq Whisper.</p>
+          </div>
+          <div class="step" data-rv>
+            <div class="step-num">03</div>
+            <h3>Hear &amp; read</h3>
+            <p>Play it back, download the audio, read the transcript — and find it all in your history.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="cta" id="access" aria-label="Get access">
+    <div class="wrap">
+      <div class="sec-tag" data-rv style="display:block;text-align:center">Chapter 03 — Access</div>
+      <h2 data-words aria-label="Your language deserves a voice.">Your language deserves a voice.</h2>
+      <p data-rv>For blind users who want to hear, students who want to study, and anyone tired of voice tech that forgot them. Come and hear yourself.</p>
+      <div class="hero-cta" data-rv>
+        <a class="btn btn--primary" href="{{ url_for('signup') }}">Create free account</a>
+        <a class="btn btn--ghost" href="{{ url_for('login') }}">Log in</a>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap foot-in">
+    <span>Made with ❤️ by <a href="https://officialdili.github.io">OfficialDiLi</a> for Nigerians</span>
+    <span>Speech by YarnGPT &amp; Groq · <a href="{{ url_for('login') }}">App login</a></span>
+  </div>
+</footer>
+
+<script src="{{ url_for('static', filename='landing.js') }}"></script>
+</body>
+</html>

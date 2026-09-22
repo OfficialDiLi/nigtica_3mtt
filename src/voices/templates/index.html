@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="csrf-token" content="{{ csrf_token }}">
+<title>Nigtica - TTS &amp; STT</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/plus-jakarta-sans@5.0.3/index.min.css">
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+<div class="container">
+  <header>
+    <div class="logo">
+      <div class="logo-icon">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/>
+          <path d="M19 10v2a7 7 0 0 1-14 0v-2"/>
+          <line x1="12" y1="19" x2="12" y2="23"/>
+          <line x1="8" y1="23" x2="16" y2="23"/>
+        </svg>
+      </div>
+      <div>
+        <h1>Nigtica</h1>
+        <p>Text-to-Speech &amp; Speech-to-Text</p>
+      </div>
+    </div>
+    <div class="status-badge">
+      <span class="status-dot"></span>
+      <span id="statusText">Ready</span>
+    </div>
+    <div class="account">
+      {% if user_email %}
+      <span>{{ user_email }}</span>
+      <span class="usage">{{ usage_total }} uses this week</span>
+      <a href="{{ url_for('logout') }}">Log out</a>
+      <a href="#" id="delete-account">Delete</a>
+      {% else %}
+      <a href="{{ url_for('login') }}">Log in</a>
+      <a href="{{ url_for('signup') }}">Sign up</a>
+      {% endif %}
+    </div>
+  </header>
+
+  <div class="key-warning" id="key-warning" style="display:none;">No YARNGPT_API_KEY configured — set it in .env to enable synthesis &amp; transcription.</div>
+
+  <div class="tabs">
+    <button class="tab active" data-tab="tts">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
+        <path d="M15.54 8.46a5 5 0 0 1 0 7.07"/>
+        <path d="M19.07 4.93a10 10 0 0 1 0 14.14"/>
+      </svg>
+      Text to Speech
+    </button>
+    <button class="tab" data-tab="stt">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/>
+        <path d="M19 10v2a7 7 0 0 1-14 0v-2"/>
+        <line x1="12" y1="19" x2="12" y2="23"/>
+      </svg>
+      Speech to Text
+    </button>
+  </div>
+
+  <div class="main-grid">
+    <div>
+      <!-- TTS Section -->
+      <div class="section active" id="tts-section">
+        <div class="card">
+          <h2 class="card-title">Speak Your Text</h2>
+          <p class="card-subtitle">Type text and hear it spoken via the YarnGPT API</p>
+
+          <div class="form-group">
+            <label class="form-label">Voice</label>
+            <select name="voice" id="tts-voice"><option value="">Provider default</option></select>
+            <small class="form-note" id="voice-note"></small>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Text to Speak</label>
+            <div class="sample-row">
+              {% for code, label, text in samples %}<button type="button" class="chip" data-sample="{{ text }}">{{ label }}</button>{% endfor %}
+            </div>
+            <textarea name="text" id="tts-text" rows="4" placeholder="e.g. {{ sample }}"></textarea>
+            <div class="char-count"><span id="charCount">0</span>/10000 characters</div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Translate to</label>
+            <select name="target_language" id="tts-target">
+              <option value="">As written</option>
+              {% for c in target_languages %}<option value="{{ c }}">{{ c }}</option>{% endfor %}
+            </select>
+          </div>
+
+          <div class="controls-row">
+            <div class="slider-group">
+              <div class="slider-label"><span>Speed</span><span id="rateVal">1.0x</span></div>
+              <input type="range" id="tts-rate" min="0.5" max="2" step="0.1" value="1">
+            </div>
+            <div class="slider-group">
+              <div class="slider-label"><span>Format</span></div>
+              <select name="output_format" id="tts-format">
+                {% for f in formats %}<option value="{{ f }}">{{ f }}</option>{% endfor %}
+              </select>
+            </div>
+          </div>
+
+          <div class="btn-group" style="margin-top: 20px;">
+            <button class="btn btn-primary" id="tts-speak">Speak</button>
+            <button class="btn btn-secondary" id="tts-pause">Pause</button>
+            <button class="btn btn-secondary" id="tts-stop">Stop</button>
+          </div>
+          <div id="tts-player"></div>
+        </div>
+      </div>
+
+      <!-- STT Section -->
+      <div class="section" id="stt-section">
+        <div class="card">
+          <h2 class="card-title">Listen to Your Voice</h2>
+          <p class="card-subtitle">Record from your mic — transcribed by YarnGPT</p>
+
+          <div class="form-group">
+            <label class="form-label">Engine</label>
+            <select name="engine" id="stt-engine">
+              <option value="yarngpt">YarnGPT (job + poll)</option>
+              <option value="groq">Groq Whisper (instant)</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Spoken language (Groq only)</label>
+            <select name="language" id="stt-language">
+              {% for c in groq_languages %}<option value="{{ c }}">{{ c }}</option>{% endfor %}
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Translate transcript to (YarnGPT only)</label>
+            <select name="target_language" id="stt-target">
+              <option value="">No translation</option>
+              {% for c in target_languages %}<option value="{{ c }}">{{ c }}</option>{% endfor %}
+            </select>
+          </div>
+
+          <div class="stt-display empty" id="stt-display">
+            <span id="stt-placeholder">Click "Start Listening" and speak into your microphone</span>
+            <span id="stt-result"></span>
+          </div>
+
+          <div class="waveform" id="waveform">
+            {% for _ in range(20) %}<div class="wave-bar"></div>{% endfor %}
+          </div>
+
+          <div class="btn-group">
+            <button class="btn btn-primary" id="stt-start">Start Listening</button>
+            <button class="btn btn-danger" id="stt-stop" style="display:none;">Stop</button>
+            <button class="btn btn-secondary" id="stt-clear">Clear</button>
+            <button class="btn btn-secondary" id="stt-copy" title="Copy to clipboard">Copy</button>
+          </div>
+          <p class="form-note">Recordings are transcribed by YarnGPT or Groq and handled under their policies — we store only usage counts, never your audio or text.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Sidebar: History -->
+    <div>
+      <div class="card">
+        <h2 class="card-title">History</h2>
+        <p class="card-subtitle">Recent transcriptions &amp; speeches</p>
+        <div class="history-list" id="history-list">
+          <div class="empty-history"><div>No history yet.<br>Start speaking or typing!</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer>Made with love by <a href="https://officialdili.github.io">officialdili</a> for Nigerians • Powered by YarnGPT</footer>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script src="{{ url_for('static', filename='app.js') }}"></script>
+</body>
+</html>

@@ -1,0 +1,32 @@
+# Render blueprint for Nigtica (Flask + Gunicorn).
+# Free tier works for a demo URL; logins are disposable there because the
+# filesystem is ephemeral (no disks on free). For real users, switch `plan`
+# to `starter` and add a disk, then set VOICES_DB to a path under its mount.
+services:
+  - type: web
+    name: nigtica
+    runtime: python
+    plan: free
+    buildCommand: uv sync --frozen
+    startCommand: >-
+      uv run --frozen gunicorn voices.main:app
+      --bind 0.0.0.0:$PORT --workers 2 --timeout 150
+      --access-logfile - --error-logfile -
+    healthCheckPath: /health
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.12.13
+      - key: SECRET_KEY
+        generateValue: true
+      - key: YARNGPT_API_KEY
+        sync: false
+      - key: GROQ_API_KEY
+        sync: false
+      # Paid plans only: attach a disk (e.g. mount path /var/data) and set:
+      # - key: VOICES_DB
+      #   value: /var/data/voices.db
+      # Challenge demo login (optional — judges can sign in directly):
+      # - key: DEMO_EMAIL
+      #   value: demo@nigtica.app
+      # - key: DEMO_PASSWORD
+      #   sync: false

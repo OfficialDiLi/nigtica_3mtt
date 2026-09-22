@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Log in - Nigtica</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/plus-jakarta-sans@5.0.3/index.min.css">
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+<div class="container auth-page">
+  <div class="card auth-card">
+    <h1 class="card-title">Welcome back</h1>
+    <p class="card-subtitle">Log in to Nigtica</p>
+    {% if error %}<div class="error-box">{{ error }}</div>{% endif %}
+    <form method="post" action="{{ url_for('login_submit', next=next) }}">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+      <div class="form-group">
+        <label class="form-label" for="email">Email</label>
+        <input type="text" id="email" name="email" inputmode="email" autocomplete="email" required>
+      </div>
+      <div class="form-group">
+        <label class="form-label" for="password">Password</label>
+        <input type="password" id="password" name="password" autocomplete="current-password" required>
+      </div>
+      <button class="btn btn-primary" type="submit" style="width:100%;">Log in</button>
+    </form>
+    <p class="auth-switch">No account yet? <a href="{{ url_for('signup') }}">Sign up</a></p>
+  </div>
+</div>
+</body>
+</html>
