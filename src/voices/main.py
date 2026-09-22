@@ -20,6 +20,7 @@ import asyncio
 import html
 import os
 import secrets
+import threading
 
 from dotenv import load_dotenv
 from flask import Flask, jsonify, redirect, render_template, request, session, url_for
@@ -53,6 +54,50 @@ if not app.secret_key:
 
 DB_PATH = os.getenv("VOICES_DB", os.path.join(app.instance_path, "voices.db"))
 os.makedirs(os.path.dirname(DB_PATH), exist_ok=True)
+
+
+def _keepalive_ping(base_url: str) -> bool:
+    """Single keep-alive ping against the public URL (counts as inbound traffic)."""
+    import urllib.request
+
+    try:
+        with urllib.request.urlopen(base_url.rstrip("/") + "/health", timeout=20) as r:
+            return 200 <= r.status < 300
+    except Exception as err:  # never let the pinger crash the app
+        print(f"[keepalive] ping failed: {err}")
+        return False
+
+
+def _keepalive_loop(base_url: str, interval_s: int) -> None:
+    import time
+
+    while True:
+        _keepalive_ping(base_url)
+        time.sleep(interval_s)
+
+
+def _start_keepalive() -> None:
+    """Self-ping the public URL so Render's idle timer never trips.
+
+    Needs RENDER_EXTERNAL_URL (provided by Render) or KEEPALIVE_URL.
+    Note: runs once per Gunicorn worker — duplicate pings are harmless.
+    """
+    base_url = os.getenv("KEEPALIVE_URL", "") or os.getenv("RENDER_EXTERNAL_URL", "")
+    if not base_url or os.getenv("PYTEST_CURRENT_TEST"):
+        return
+    try:
+        interval_s = max(60, int(os.getenv("KEEPALIVE_INTERVAL_MIN", "9")) * 60)
+    except ValueError:
+        interval_s = 9 * 60
+    thread = threading.Thread(
+        target=_keepalive_loop, args=(base_url, interval_s),
+        name="keepalive", daemon=True,
+    )
+    thread.start()
+    print(f"[keepalive] pinging {base_url.rstrip('/')}/health every {interval_s // 60} min")
+
+
+_start_keepalive()
 
 
 def _seed_demo_user() -> None:

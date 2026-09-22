@@ -147,8 +147,11 @@ transcriptions), health check on `/health`. Set `YARNGPT_API_KEY` (and
 
 > **Persistence note:** Render's free tier has an ephemeral filesystem and no
 > disks, so registered users are wiped on restarts — acceptable for a demo
-> URL. For real users, use a paid plan with a persistent disk and point
-> `VOICES_DB` under its mount (e.g. `/var/data/voices.db`).
+> URL. Spin-down is handled: the app self-pings `GET /health` every 9 minutes
+> through its public URL (Render provides `RENDER_EXTERNAL_URL`
+> automatically), so the 15-minute idle timer never trips. For real users, use
+> a paid plan with a persistent disk and point `VOICES_DB` under its mount
+> (e.g. `/var/data/voices.db`).
 
 ## Development
 
